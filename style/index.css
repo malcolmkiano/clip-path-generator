@@ -1,0 +1,273 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+@import url("https://use.typekit.net/hiq1tdy.css");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: brandon-grotesque, sans-serif;
+  font-size: 18px;
+}
+
+html, body, main, section {
+  height: 100%;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+}
+
+canvas {
+  position: absolute;
+  z-index: 100;
+}
+canvas.mask {
+  background: #FFF;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.workspace {
+  background: #444444;
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFF;
+}
+.workspace .artboard {
+  margin: 0 auto;
+  width: auto;
+  height: auto;
+  max-width: 80%;
+  max-height: 80%;
+  transition: all 0.2s ease;
+}
+.workspace .artboard.masked {
+  filter: brightness(50%);
+}
+.workspace .info {
+  text-align: center;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+.workspace .info i {
+  margin-bottom: 2rem;
+  font-size: 8rem;
+}
+.workspace.dragenter .info, .workspace.dragenter .artboard, .workspace.dragover .info, .workspace.dragover .artboard {
+  opacity: 0.3;
+}
+.workspace.dragenter canvas, .workspace.dragover canvas {
+  pointer-events: none;
+}
+
+.toolbar {
+  overflow-y: auto;
+  width: 25rem;
+  max-width: 500px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.toolbar button {
+  font-family: inherit;
+  font-size: 0.8rem;
+  margin-right: 0.5em;
+  color: inherit;
+  border: 0.15em solid currentColor;
+  padding: 0.5em 1em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 5;
+  overflow: hidden;
+  font-weight: 900;
+  cursor: pointer;
+  background: none;
+}
+.toolbar button i {
+  font-size: 1em;
+  position: relative;
+  top: 0.15em;
+  margin-right: 0.4em;
+}
+.toolbar button.done {
+  border-color: #000;
+  background: #000;
+  color: #FFF;
+}
+.toolbar button.masked {
+  border-color: #377B70;
+  background: #377B70;
+  color: #FFF;
+  outline: none;
+}
+@media (hover: hover) {
+  .toolbar button::after {
+    content: "";
+    position: absolute;
+    font-size: inherit;
+    top: 50%;
+    left: 50%;
+    height: 10em;
+    width: 10em;
+    background: currentColor;
+    border-radius: 50%;
+    opacity: 0;
+    z-index: 1;
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    transition: all 0.5s ease;
+  }
+  .toolbar button:hover {
+    text-decoration: none;
+  }
+  .toolbar button:hover::after {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .toolbar button:active::after {
+    opacity: 0.4;
+  }
+}
+.toolbar button:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.toolbar form, .toolbar article {
+  flex: 1;
+}
+.toolbar code {
+  font-family: monospace;
+}
+.toolbar pre {
+  width: 100%;
+  white-space: normal;
+}
+.toolbar footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+.toolbar footer a {
+  color: #c2a202;
+}
+.toolbar article ul {
+  border: 0.1em solid;
+}
+.toolbar article ul .path-id {
+  font-weight: bold;
+}
+.toolbar article ul li {
+  padding: 1rem;
+}
+.toolbar article ul li p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toolbar article ul li p > span {
+  flex: 1;
+}
+.toolbar article ul li p a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.5em 0.5em 0.4em;
+  margin-left: 0.5em;
+  background: #EEE;
+  color: inherit;
+  border-radius: 0.2em;
+  transition: all 0.2s ease;
+}
+.toolbar article ul li p a:hover {
+  background: #DDD;
+}
+.toolbar article ul li p a.delete:hover {
+  background: #F55;
+  color: #FFF;
+}
+.toolbar article ul li p a i {
+  font-size: inherit;
+}
+.toolbar article ul li p a span {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+.toolbar article ul li .saved {
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  transition: all 0.2s ease;
+  resize: none;
+  width: 100%;
+}
+.toolbar article ul li:hover .saved {
+  margin-top: 0.5rem;
+  opacity: 1;
+  padding: 0.5rem;
+  max-height: 50vh;
+}
+.toolbar article ul li:not(:last-of-type) {
+  border-bottom: 0.1em solid;
+}
+.toolbar h1 {
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
+.toolbar h2 {
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.toolbar .input-group {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+}
+.toolbar .input-group:first-of-type {
+  margin-top: 0;
+}
+.toolbar .input-group label {
+  display: inline-block;
+  margin-bottom: 0.4rem;
+}
+.toolbar .input-group input:not([type=radio]), .toolbar .input-group textarea {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.5em;
+  border-radius: 0.2em;
+  border: 1px solid #DDD;
+}
+.toolbar .input-group textarea {
+  font-family: monospace;
+  resize: none;
+}
+.toolbar .input-group .options {
+  display: flex;
+  align-items: center;
+}
+.toolbar .input-group .options .option {
+  margin-right: 1rem;
+  font-weight: bold;
+}
+.toolbar .input-group .options label {
+  color: #999;
+  transition: all 0.2s ease;
+}
+.toolbar .input-group .options input:checked + label {
+  color: inherit;
+}

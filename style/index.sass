@@ -1,0 +1,270 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css")
+@import url("https://use.typekit.net/hiq1tdy.css")
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons")
+
+*
+  box-sizing: border-box
+
+html
+  font-family: brandon-grotesque, sans-serif
+  font-size: 18px
+
+html, body, main, section
+  height: 100%
+
+main
+  display: flex
+  justify-content: space-between
+
+$ws: #444444
+
+canvas
+  position: absolute
+  z-index: 100
+
+  &.mask
+    background: #FFF
+    pointer-events: none
+    mix-blend-mode: overlay
+
+.workspace
+  background: $ws
+  position: relative
+  flex: 1
+  display: flex
+  align-items: center
+  justify-content: center
+  color: #FFF
+
+  .artboard
+    margin: 0 auto
+    width: auto
+    height: auto
+    max-width: 80%
+    max-height: 80%
+    transition: all .2s ease
+
+    &.masked
+      filter: brightness(50%)
+
+  .info
+    text-align: center
+    text-transform: uppercase
+    pointer-events: none
+    transition: all .2s ease
+
+    i
+      margin-bottom: 2rem
+      font-size: 8rem
+  
+  &.dragenter, &.dragover
+    .info, .artboard
+      opacity: 0.3
+    canvas
+      pointer-events: none
+
+.toolbar
+  overflow-y: auto
+  width: 25rem
+  max-width: 500px
+  padding: 2rem
+  display: flex
+  flex-direction: column
+
+  button
+    font-family: inherit
+    font-size: .8rem
+    margin-right: .5em
+    color: inherit
+    border: .15em solid currentColor
+    padding: .5em 1em
+    text-transform: uppercase
+    position: relative
+    z-index: 5
+    overflow: hidden
+    font-weight: 900
+    cursor: pointer
+    background: none
+
+    i
+      font-size: 1em
+      position: relative
+      top: 0.15em
+      margin-right: 0.4em
+
+    &.done
+      border-color: #000
+      background: #000
+      color: #FFF
+    
+    &.masked
+      border-color: #377B70
+      background: #377B70
+      color: #FFF
+      outline: none
+    
+    @media (hover: hover)
+      &::after
+        content: ""
+        position: absolute
+        font-size: inherit
+        top: 50%
+        left: 50%
+        height: 10em
+        width: 10em
+        background: currentColor
+        border-radius: 50%
+        opacity: 0
+        z-index: 1
+        transform: translate(-50%, -50%) scale(0)
+        pointer-events: none
+        transition: all .5s ease
+
+      &:hover
+        text-decoration: none
+
+        &::after
+          opacity: 0.2
+          transform: translate(-50%, -50%) scale(1)
+      
+      &:active::after
+        opacity: 0.4
+    
+    &:disabled
+      pointer-events: none
+      opacity: 0.5
+
+  form, article
+    flex: 1
+
+  code
+    font-family: monospace
+  
+  pre
+    width: 100%
+    white-space: normal
+
+  footer
+    margin-top: 2rem
+    text-align: center
+
+    a
+      color: #c2a202
+
+  article ul
+    border: .1em solid
+
+    .path-id
+      font-weight: bold
+    
+    li
+      padding: 1rem
+
+      p
+        display: flex
+        align-items: center
+        justify-content: space-between
+
+        & > span
+          flex: 1
+
+        a
+          display: flex
+          align-items: center
+          justify-content: center
+          text-decoration: none
+          text-transform: uppercase
+          font-size: 0.8rem
+          font-weight: bold
+          padding: .5em .5em .4em
+          margin-left: 0.5em
+          background: #EEE
+          color: inherit
+          border-radius: .2em
+          transition: all .2s ease
+
+          &:hover
+            background: #DDD
+
+          &.delete:hover
+            background: #F55
+            color: #FFF
+
+          i
+            font-size: inherit
+          
+          span
+            height: 0
+            width: 0
+            overflow: hidden
+
+      .saved
+        padding: 0
+        margin: 0
+        opacity: 0
+        max-height: 0
+        overflow: hidden
+        border: 1px solid #ccc
+        transition: all .2s ease
+        resize: none
+        width: 100%
+
+      &:hover .saved
+        margin-top: 0.5rem
+        opacity: 1
+        padding: 0.5rem
+        max-height: 50vh
+
+      &:not(:last-of-type)
+        border-bottom: .1em solid
+
+
+  h1
+    text-transform: uppercase
+    font-size: 1.5rem
+    font-weight: 900
+    margin-bottom: 1rem
+  
+  h2
+    text-transform: uppercase
+    font-weight: bold
+    margin-bottom: 1rem
+  
+  .input-group
+    margin: 2rem 0
+    display: flex
+    flex-direction: column
+
+    &:first-of-type
+      margin-top: 0
+
+    label
+      display: inline-block
+      margin-bottom: 0.4rem
+
+    input:not([type=radio]), textarea
+      font-family: inherit
+      font-size: inherit
+      padding: .5em
+      border-radius: .2em
+      border: 1px solid #DDD
+    
+    textarea
+      font-family: monospace
+      resize: none
+  
+    .options
+      display: flex
+      align-items: center
+
+      .option
+        margin-right: 1rem
+        font-weight: bold
+        
+      label
+        color: #999
+        transition: all .2s ease
+
+      input:checked + label
+        color: inherit
+    

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- links -->
+  <link rel="stylesheet" href="style/index.css">
+
+  <!-- SEO -->
+  <title>Clip Path Generator</title>
+</head>
+<body>
+  
+  <main id="app">
+
+    <section
+      :class="'workspace ' + dragState"
+      v-on:dragenter="handleDrag"
+      v-on:dragleave="handleDrag"
+      v-on:dragover="handleDrag"
+      v-on:drop="handleDrag"
+      id="workspace">
+      
+      <img :class="'artboard ' + (masked ? 'masked' : '')" v-show="image" :src="image" draggable="false"/>
+      <canvas
+        class="mask"
+        v-show="masked"
+        :height="canvas.height" :width="canvas.width"
+        :style="clipPath"></canvas>
+
+      <div class="info" v-show="!image">
+        <i class="material-icons">insert_photo</i>
+        <p>Drag and drop your image here.</p>
+      </div>
+
+    </section>
+
+    <section class="toolbar">
+      <header>
+        <h1>Clip Path Generator</h1>
+      </header>
+
+      <form action="">
+        
+        <div class="input-group">
+          <label for="pathId">Path ID:</label>
+          <input type="text" id="pathId" name="path-id" placeholder="clipPath" v-model="pathId" autocomplete="off" spellcheck="false" maxlength="20" pattern="[A-Za-z0-9_-]+"/>
+        </div>
+        
+        <div class="input-group">
+          <label for="options">Value Type:</label>
+          <div class="options" id="options">
+            <div class="option">
+              <input checked type="radio" name="valueType" id="valType1" value="absolute" v-model="valueType"/>
+              <label for="valType1">Absolute</label>
+            </div>
+            <div class="option">
+              <input type="radio" name="valueType" id="valType2" value="%" v-model="valueType"/>
+              <label for="valType2">Percentage</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="buttons">
+            <button @click="toggleMask" :disabled="!image" type="button" :class="masked ? 'masked' : ''">{{masked ? 'Unmask' : 'Mask'}}</button>
+            <button @click="clearPoints" :disabled="!points.length" class="delete" type="button">Clear</button>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="outputCode">Output:</label>
+          <textarea name="output" id="outputCode" rows="8" readonly>{{output()}}</textarea>
+        </div>
+
+        <div class="input-group">
+          <div class="buttons">
+            <button @click="copyCode" :disabled="copied" class="done" type="button"><i class="material-icons">code</i>{{!copied ? 'Copy code' : 'Copied'}}</button>
+            <button @click="saveCode" type="button">Save</button>
+          </div>
+        </div>
+
+      </form>
+
+      <article class="output">
+        <h2>Saved Output:</h2>
+        <ul v-if="saved.length">
+          <li v-for="(item, i) in saved" :key="i" :data-key="i">
+            <p class="path-id">
+              <span>{{item.id}}</span>
+              <a @click="copySaved" href="#" title="Copy code">
+                <i class="material-icons">code</i><span>Copy</span>
+              </a>
+              <a @click="deleteCode" href="#" class="delete" title="Delete code">
+                <i class="material-icons">delete</i><span>Delete</span>
+              </a>
+            </p>
+            <pre class="saved"><code>{{item.code}}</code></pre>
+          </li>
+        </ul>
+        <p v-else>
+          Nothing to see here... yet.
+        </p>
+      </article>
+
+      <div v-html="output(false)"></div>
+
+      <footer>
+        <p>Designed & developed by <a href="https://malcolmkiano.com" target="_blank" rel="noopener noreferrer">Malcolm Kiano</a>.</p>
+      </footer>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
